@@ -17,6 +17,7 @@
 .idea/**/libraries
 cmake-build-*/
 .idea/**/mongoSettings.xml
+sample.ipynb
 *.iws
 out/
 .idea_modules/
@@ -354,3 +355,4 @@ dmypy.json
 cython_debug/
 .aider*
 !/.env
+!/sample.ipynb
