@@ -4,10 +4,12 @@ from dotenv import load_dotenv
 
 
 # Load environment variables
-load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
+load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 
 # Set up OpenAI client
 openai_api_key = os.getenv('OPENAI_API_KEY')
+if not openai_api_key:
+    raise ValueError("No OpenAI API key found. Make sure it's set in your .env file.")
 client = openai.OpenAI(api_key=openai_api_key)
 
 
