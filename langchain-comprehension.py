@@ -3,15 +3,23 @@ import asyncio
 import aiohttp
 import ssl
 import certifi
+import tiktoken
+from tenacity import retry, stop_after_attempt, wait_exponential
+from aiohttp import ClientTimeout
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain.chains.summarize import load_summarize_chain
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_core.messages import HumanMessage
 from PyPDF2 import PdfReader
 from io import BytesIO
 from langchain.schema import Document
 from pydantic import SecretStr
+
+
+# Load encoding
+tiktoken.get_encoding("o200k_base")
 
 # Load environment variables
 load_dotenv()
@@ -23,7 +31,7 @@ if not openai_api_key:
 
 llm = ChatOpenAI(api_key=openai_api_key)
 llm.temperature = 0
-llm.model_name = "gpt-3.5-turbo"
+llm.model_name = "gpt-4o"
 
 pdf_urls = [
     "https://www.stepstonegroup.com/wp-content/uploads/2022/11/Venture-Capital_-Partying-Like-Its-1999_.pdf",
@@ -40,9 +48,11 @@ ssl_context.check_hostname = False
 ssl_context.verify_mode = ssl.CERT_NONE
 
 
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
 async def fetch_pdf(session, url):
     try:
-        async with session.get(url, ssl=ssl_context) as response:
+        timeout = ClientTimeout(total=60)  # 60 seconds timeout
+        async with session.get(url, ssl=ssl_context, timeout=timeout) as response:
             if response.status == 200:
                 return await response.read()
             else:
@@ -50,7 +60,7 @@ async def fetch_pdf(session, url):
                 return None
     except Exception as e:
         print(f"Error fetching {url}: {str(e)}")
-        return None
+        raise  # Re-raise the exception to trigger a retry
 
 
 async def load_pdf(url_or_path):
@@ -110,8 +120,9 @@ def compare_summaries(stuff_summary, map_reduce_summary):
     Analyze the differences in content, detail, and overall effectiveness for understanding the document.
     """
 
-    comparison = llm.predict(comparison_prompt)
-    return comparison
+    message = HumanMessage(content=comparison_prompt)
+    response = llm.invoke([message])
+    return response.content
 
 
 async def process_pdf(url_or_path):
