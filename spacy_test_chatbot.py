@@ -2,7 +2,12 @@ import spacy
 import json
 
 def load_spacy_model():
-    return spacy.load("en_core_web_sm")
+    try:
+        return spacy.load("en_core_web_sm")
+    except OSError:
+        print("Model 'en_core_web_sm' not found. Downloading...")
+        spacy.cli.download("en_core_web_sm")
+        return spacy.load("en_core_web_sm")
 
 def get_named_entities(text, nlp, entity_type):
     doc = nlp(text)
