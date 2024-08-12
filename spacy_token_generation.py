@@ -1,36 +1,47 @@
 import spacy
 import numpy as np
 
-# Load the spaCy model
-nlp = spacy.load("en_core_web_sm")
+def load_model(model_name):
+    try:
+        return spacy.load(model_name)
+    except OSError:
+        print(f"Model {model_name} not found. Downloading...")
+        spacy.cli.download(model_name)
+        return spacy.load(model_name)
 
-# Define the text
-text = "The patient presents with acute myocardial infarction."
+def process_text(nlp, text):
+    doc = nlp(text)
+    print(f"\nModel: {nlp.meta['name']}")
+    print(f"Vector dimension: {nlp.vocab.vectors.shape[1]}")
+    
+    print("\nTokens (index: token):")
+    for i, token in enumerate(doc):
+        print(f"{i}: {token.text}")
+    
+    print("\nToken vectors:")
+    for token in doc:
+        vector = [round(float(x), 4) for x in token.vector]
+        print(f"{token.text}: {vector}")
+    
+    doc_vector = doc.vector
+    mean_vector = [round(float(x), 4) for x in doc_vector]
+    print("\nMean document vector:")
+    print(mean_vector)
 
-# Print the original text
-print("Original text:")
-print(text)
+def main():
+    # Define the text
+    text = "The patient presents with acute myocardial infarction."
+    
+    print("Original text:")
+    print(text)
+    
+    # Load and process with all three models
+    models = ["en_core_web_sm", "en_core_web_md", "en_core_web_lg"]
+    
+    for model_name in models:
+        nlp = load_model(model_name)
+        process_text(nlp, text)
+        print("\n" + "="*50 + "\n")
 
-# Process the text and generate tokens
-doc = nlp(text)
-
-# Print the tokens with their indices
-print("\nTokens (index: token):")
-for i, token in enumerate(doc):
-    print(f"{i}: {token.text}")
-
-# Print vector information
-print(f"\nVector dimension: {nlp.vocab.vectors.shape[1]}")
-
-# Print the vector representation of each token
-print("\nToken vectors:")
-for token in doc:
-    # Convert the vector to a list and round each value to 4 decimal places
-    vector = [round(float(x), 4) for x in token.vector]
-    print(f"{token.text}: {vector}")
-
-# Optional: Print the mean vector of the entire document
-doc_vector = doc.vector
-mean_vector = [round(float(x), 4) for x in doc_vector]
-print("\nMean document vector:")
-print(mean_vector)
+if __name__ == "__main__":
+    main()
