@@ -37,7 +37,13 @@ def summarize_text(text, method="stuff"):
 
 # Example usage
 text = """
-Your long text here. This should be a substantial amount of text that requires summarization.
+Artificial Intelligence (AI) is a rapidly evolving field of computer science focused on creating intelligent machines that can perform tasks that typically require human intelligence. These tasks include visual perception, speech recognition, decision-making, and language translation. AI systems are designed to learn from experience, adjust to new inputs, and perform human-like tasks.
+
+The field of AI can be divided into two main categories: narrow AI and general AI. Narrow AI, also known as weak AI, is designed to perform a specific task, such as voice recognition or playing chess. General AI, also called strong AI or artificial general intelligence (AGI), refers to machines that possess the ability to understand, learn, and apply knowledge across a wide range of tasks at a level equal to or exceeding human capabilities.
+
+Machine Learning (ML) is a subset of AI that focuses on the development of algorithms and statistical models that enable computer systems to improve their performance on a specific task through experience. Deep Learning, a subfield of machine learning, uses artificial neural networks with multiple layers to analyze various factors of data.
+
+AI has numerous applications across various industries, including healthcare (for diagnosis and treatment recommendations), finance (for fraud detection and algorithmic trading), automotive (for self-driving cars), and many more. As AI continues to advance, it promises to revolutionize many aspects of our lives and work, while also raising important ethical and societal questions about its impact and governance.
 """
 
 print("Stuff method summary:")
@@ -65,8 +71,7 @@ def create_rag_system():
         documents.append(Document(text=content))
 
     # Parse nodes
-    text_splitter = TokenTextSplitter(chunk_size=1024, chunk_overlap=20)
-    parser = SimpleNodeParser.from_defaults(text_splitter=text_splitter)
+    parser = SimpleNodeParser.from_defaults()
     nodes = parser.get_nodes_from_documents(documents)
 
     # Create index
