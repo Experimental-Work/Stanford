@@ -15,7 +15,7 @@ load_dotenv()
 
 # Part 1: Summarization using llama-index
 def summarize_text(text, method="stuff"):
-    llm = OpenAI(temperature=0, model="gpt-3.5-turbo")
+    llm = OpenAI(temperature=0, model="gpt-4o")
     
     if method == "stuff":
         response = llm.complete(f"Summarize the following text:\n\n{text}")
