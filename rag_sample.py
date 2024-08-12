@@ -8,7 +8,8 @@ from llama_index.core.node_parser import SimpleNodeParser
 from llama_index.core.text_splitter import TokenTextSplitter
 from llama_index.llms.openai import OpenAI
 from llama_index.core.llms import ChatMessage
-from langchain_community.chat_message_histories import ChatMessageHistory
+# Using the new recommended import to avoid deprecation warnings
+from langchain.memory import ChatMessageHistory
 
 # Set up OpenAI API key
 from dotenv import load_dotenv
