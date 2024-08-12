@@ -2,36 +2,31 @@ import os
 import requests
 import csv
 from io import StringIO
-from dotenv import load_dotenv
+import textwrap
 from llama_index.core import Document, VectorStoreIndex
 from llama_index.core.node_parser import SimpleFileNodeParser, TokenTextSplitter
-from langchain.chains.summarize import load_summarize_chain
-from langchain.llms import OpenAI
-from langchain.docstore.document import Document as LangchainDocument
-import textwrap
+from llama_index.llms.openai import OpenAI
+from llama_index.core.llms import ChatMessage
 
-# Load environment variables
-load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
+# Set up OpenAI API key
+os.environ["OPENAI_API_KEY"] = "sk-..."  # Replace with your actual API key
 
-# Set up OpenAI client
-openai_api_key = os.getenv('OPENAI_API_KEY')
-if not openai_api_key:
-    raise ValueError("OPENAI_API_KEY not found in environment variables")
-
-# Part 1: Summarization using LangChain
+# Part 1: Summarization using llama-index
 def summarize_text(text, method="stuff"):
-    llm = OpenAI(temperature=0, api_key=openai_api_key)
-    docs = [LangchainDocument(page_content=text)]
-
+    llm = OpenAI(temperature=0)
+    
     if method == "stuff":
-        chain = load_summarize_chain(llm, chain_type="stuff")
+        response = llm.complete(f"Summarize the following text:\n\n{text}")
     elif method == "map_reduce":
-        chain = load_summarize_chain(llm, chain_type="map_reduce")
+        # For map_reduce, we'll split the text and summarize each part, then combine
+        splitter = TokenTextSplitter(chunk_size=1000, chunk_overlap=20)
+        chunks = splitter.split_text(text)
+        summaries = [llm.complete(f"Summarize the following text:\n\n{chunk}") for chunk in chunks]
+        response = llm.complete(f"Combine these summaries into a coherent summary:\n\n{''.join(summaries)}")
     else:
         raise ValueError("Invalid method. Choose 'stuff' or 'map_reduce'.")
 
-    summary = chain.run(docs)
-    return summary
+    return str(response)
 
 # Example usage
 text = """
@@ -82,3 +77,14 @@ query_engine = index.as_query_engine()
 response = query_engine.query("What are some popular AI startups?")
 print("\nRAG Query Result:")
 print(textwrap.fill(str(response), width=80))
+
+# Example of using chat with a list of messages
+messages = [
+    ChatMessage(role="system", content="You are a helpful AI assistant."),
+    ChatMessage(role="user", content="Tell me about Paul Graham."),
+]
+
+llm = OpenAI()
+chat_response = llm.chat(messages)
+print("\nChat Response about Paul Graham:")
+print(textwrap.fill(str(chat_response), width=80))
