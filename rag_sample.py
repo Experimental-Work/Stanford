@@ -20,7 +20,7 @@ if not openai_api_key:
 
 # Part 1: Summarization using llama-index
 def summarize_text(text, method="stuff"):
-    llm = OpenAI(temperature=0, model="gpt-3.5-turbo", api_key=openai_api_key)
+    llm = OpenAI(temperature=0, model="gpt-4o", api_key=openai_api_key)
     
     if method == "stuff":
         response = llm.complete(f"Summarize the following text:\n\n{text}")
