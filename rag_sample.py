@@ -7,7 +7,7 @@ from llama_index.core import Document, VectorStoreIndex
 from llama_index.core.node_parser import SimpleNodeParser
 from llama_index.core.text_splitter import TokenTextSplitter
 from llama_index.llms.openai import OpenAI
-from llama_index.core.llms import ChatMessage
+from llama_index.core import QueryBundle
 
 # Set up OpenAI API key
 from dotenv import load_dotenv
@@ -85,17 +85,16 @@ index = create_rag_system()
 
 # Query the index
 query_engine = index.as_query_engine()
-response = query_engine.query("What are some popular AI startups?")
-print("\nRAG Query Result:")
-print(textwrap.fill(str(response), width=80))
+query = QueryBundle("What are some popular AI startups?")
+try:
+    response = query_engine.query(query)
+    print("\nRAG Query Result:")
+    print(textwrap.fill(str(response), width=80))
+except Exception as e:
+    print(f"\nError querying the index: {e}")
 
-# Example of using chat with a list of messages
-messages = [
-    ChatMessage(role="system", content="You are a helpful AI assistant."),
-    ChatMessage(role="user", content="Tell me about Paul Graham."),
-]
-
+# Example of using chat with the OpenAI model directly
 llm = OpenAI(api_key=openai_api_key)
-chat_response = llm.chat(messages)
+chat_response = llm.complete("Tell me about Paul Graham.")
 print("\nChat Response about Paul Graham:")
 print(textwrap.fill(str(chat_response), width=80))
