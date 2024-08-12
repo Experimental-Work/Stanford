@@ -4,16 +4,18 @@ import csv
 from io import StringIO
 import textwrap
 from llama_index.core import Document, VectorStoreIndex
-from llama_index.core.node_parser import SimpleFileNodeParser, TokenTextSplitter
+from llama_index.core.node_parser import SimpleNodeParser
+from llama_index.core.text_splitter import TokenTextSplitter
 from llama_index.llms.openai import OpenAI
 from llama_index.core.llms import ChatMessage
 
 # Set up OpenAI API key
-os.environ["OPENAI_API_KEY"] = "sk-..."  # Replace with your actual API key
+from dotenv import load_dotenv
+load_dotenv()
 
 # Part 1: Summarization using llama-index
 def summarize_text(text, method="stuff"):
-    llm = OpenAI(temperature=0)
+    llm = OpenAI(temperature=0, model="gpt-3.5-turbo")
     
     if method == "stuff":
         response = llm.complete(f"Summarize the following text:\n\n{text}")
@@ -58,9 +60,8 @@ def create_rag_system():
         documents.append(Document(text=content))
 
     # Parse nodes
-    parser = SimpleFileNodeParser.from_defaults(
-        text_splitter=TokenTextSplitter(chunk_size=1024, chunk_overlap=20)
-    )
+    text_splitter = TokenTextSplitter(chunk_size=1024, chunk_overlap=20)
+    parser = SimpleNodeParser.from_defaults(text_splitter=text_splitter)
     nodes = parser.get_nodes_from_documents(documents)
 
     # Create index
