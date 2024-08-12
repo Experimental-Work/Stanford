@@ -4,8 +4,7 @@ import csv
 from io import StringIO
 from dotenv import load_dotenv
 from llama_index.core import Document, VectorStoreIndex
-from llama_index.core.node_parser import SimpleNodeParser
-from llama_index.core.node_parser import TokenTextSplitter
+from llama_index.core.node_parser import SimpleFileNodeParser, TokenTextSplitter
 from langchain.chains.summarize import load_summarize_chain
 from langchain_openai import OpenAI
 from langchain.docstore.document import Document as LangchainDocument
@@ -64,8 +63,10 @@ def create_rag_system():
         documents.append(Document(text=content))
 
     # Parse nodes
-    parser = SimpleNodeParser.from_defaults()
-    nodes = parser.get_nodes_from_documents(documents, show_progress=True)
+    parser = SimpleFileNodeParser.from_defaults(
+        text_splitter=TokenTextSplitter(chunk_size=1024, chunk_overlap=20)
+    )
+    nodes = parser.get_nodes_from_documents(documents)
 
     # Create index
     index = VectorStoreIndex(nodes)
