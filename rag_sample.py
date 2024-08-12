@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from llama_index.core import Document, VectorStoreIndex
 from llama_index.core.node_parser import SimpleFileNodeParser, TokenTextSplitter
 from langchain.chains.summarize import load_summarize_chain
-from langchain_openai import OpenAI
+from langchain.llms import OpenAI
 from langchain.docstore.document import Document as LangchainDocument
 import textwrap
 
