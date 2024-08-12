@@ -20,7 +20,7 @@ if not openai_api_key:
 
 # Part 1: Summarization using llama-index
 def summarize_text(text, method="stuff"):
-    llm = OpenAI(temperature=0, model="gpt-4o", api_key=openai_api_key)
+    llm = OpenAI(temperature=0, model="gpt-3.5-turbo", api_key=openai_api_key)
     
     if method == "stuff":
         response = llm.complete(f"Summarize the following text:\n\n{text}")
@@ -28,7 +28,7 @@ def summarize_text(text, method="stuff"):
         # For map_reduce, we'll split the text and summarize each part, then combine
         splitter = TokenTextSplitter(chunk_size=1000, chunk_overlap=20)
         chunks = splitter.split_text(text)
-        summaries = [llm.complete(f"Summarize the following text:\n\n{chunk}") for chunk in chunks]
+        summaries = [str(llm.complete(f"Summarize the following text:\n\n{chunk}")) for chunk in chunks]
         response = llm.complete(f"Combine these summaries into a coherent summary:\n\n{''.join(summaries)}")
     else:
         raise ValueError("Invalid method. Choose 'stuff' or 'map_reduce'.")
