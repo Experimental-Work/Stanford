@@ -8,7 +8,7 @@ from llama_index.core.node_parser import SimpleNodeParser
 from llama_index.core.text_splitter import TokenTextSplitter
 from llama_index.llms.openai import OpenAI
 from llama_index.core.llms import ChatMessage
-from langchain_community.chat_message_histories import ChatMessageHistory
+from langchain.memory import ChatMessageHistory
 
 # Set up OpenAI API key
 from dotenv import load_dotenv
@@ -27,10 +27,10 @@ def summarize_text(text, method="stuff"):
         response = llm.complete(f"Summarize the following text:\n\n{text}")
     elif method == "map_reduce":
         # For map_reduce, we'll split the text and summarize each part, then combine
-        splitter = TokenTextSplitter(chunk_size=1000, chunk_overlap=20)
+        splitter = TokenTextSplitter(chunk_size=500, chunk_overlap=50)
         chunks = splitter.split_text(text)
-        summaries = [str(llm.complete(f"Summarize the following text:\n\n{chunk}")) for chunk in chunks]
-        response = llm.complete(f"Combine these summaries into a coherent summary:\n\n{''.join(summaries)}")
+        summaries = [str(llm.complete(f"Provide a concise summary of the following text, focusing on key points:\n\n{chunk}")) for chunk in chunks]
+        response = llm.complete(f"Combine the following summaries into a coherent, comprehensive summary. Ensure all key points are included and the summary flows well:\n\n{''.join(summaries)}")
     else:
         raise ValueError("Invalid method. Choose 'stuff' or 'map_reduce'.")
 
