@@ -3,15 +3,15 @@ import json
 
 def load_spacy_model():
     try:
-        return spacy.load("en_core_web_sm")
+        return spacy.load("en_core_web_md")
     except OSError:
-        print("Model 'en_core_web_sm' not found. Downloading...")
-        spacy.cli.download("en_core_web_sm")
-        return spacy.load("en_core_web_sm")
+        print("Model 'en_core_web_md' not found. Downloading...")
+        spacy.cli.download("en_core_web_md")
+        return spacy.load("en_core_web_md")
 
 def get_named_entities(text, nlp, entity_type):
     doc = nlp(text)
-    entities = [ent.text for ent in doc.ents if ent.label_ == entity_type]
+    entities = [{"text": ent.text, "label": ent.label_} for ent in doc.ents]
     return entities
 
 def main():
@@ -25,17 +25,11 @@ def main():
         if text.lower() == 'quit':
             break
 
-        entity_type = input("Enter the entity type you want to extract (e.g., PERSON, ORG, GPE): ").upper()
-
-        entities = get_named_entities(text, nlp, entity_type)
-
-        result = {
-            "entity_type": entity_type,
-            "entities": entities
-        }
+        entities = get_named_entities(text, nlp, "")
 
         print("\nExtracted entities:")
-        print(json.dumps(result, indent=2))
+        for entity in entities:
+            print(f"{entity['text']} - {entity['label']}")
 
 if __name__ == "__main__":
     main()
