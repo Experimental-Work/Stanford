@@ -3,7 +3,8 @@ import requests
 import csv
 from io import StringIO
 from dotenv import load_dotenv
-from llama_index import VectorStoreIndex, Document
+from llama_index import Document
+from llama_index.indices import VectorStoreIndex
 from llama_index.node_parser import SimpleNodeParser
 from llama_index.langchain_helpers.text_splitter import TokenTextSplitter
 from langchain.chains.summarize import load_summarize_chain
