@@ -12,8 +12,9 @@ print(text)
 
 # Process the text and generate tokens
 doc = nlp(text)
-tokens = [token.text for token in doc]
+tokens = [(i, token.text) for i, token in enumerate(doc)]
 
-# Print the tokens
-print("\nTokens:")
-print(tokens)
+# Print the tokens with their indices
+print("\nTokens (index: token):")
+for index, token in tokens:
+    print(f"{index}: {token}")
