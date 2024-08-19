@@ -1,24 +1,22 @@
-import os
 import asyncio
-import aiohttp
+import os
 import ssl
+from io import BytesIO
+
+import aiohttp
 import certifi
 import tiktoken
-from tenacity import retry, stop_after_attempt, wait_exponential
+from PyPDF2 import PdfReader
 from aiohttp import ClientTimeout
 from dotenv import load_dotenv
-from PyPDF2 import PdfReader
-from io import BytesIO
-from pydantic import SecretStr
-
+from langchain.chains.summarize import load_summarize_chain
+from langchain.schema import Document
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_core.messages import HumanMessage
 # LangChain imports
 from langchain_openai import ChatOpenAI
-from langchain.chains.summarize import load_summarize_chain
-from langchain_community.document_loaders import PyPDFLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_core.messages import HumanMessage
-from langchain.schema import Document
-
+from tenacity import retry, stop_after_attempt, wait_exponential
 
 # Load encoding
 tiktoken.get_encoding("o200k_base")
@@ -27,7 +25,7 @@ tiktoken.get_encoding("o200k_base")
 load_dotenv()
 
 # Set up OpenAI client
-openai_api_key = os.getenv('OPENAI_API_KEY')
+openai_api_key = os.getenv("OPENAI_API_KEY")
 if not openai_api_key:
     raise ValueError("No OpenAI API key found. Make sure it's set in your .env file.")
 
@@ -36,13 +34,13 @@ llm.temperature = 0
 llm.model_name = "gpt-4o"
 
 pdf_urls = [
-    "https://personal.utdallas.edu/~otoole/CGS2301_S09/15_expert.pdf",
+    "https://personal.utdallas.edu/~otoole/CGS2301_S09/15_expert.pdf",  # added for testing
     "https://www.stepstonegroup.com/wp-content/uploads/2022/11/Venture-Capital_-Partying-Like-Its-1999_.pdf",
     "Ch9Leleux.pdf",  # Local file
     "https://www.cmc.edu/sites/default/files/Bias%20in%20the%20Reporting%20of%20Venture%20Capital%20Performance-%20The%20Disciplinary%20Role%20of%20FOIA%20%20.pdf",
     "https://www.albion.vc/app/uploads/2022/07/SaaS-AlbionVC.pdf",
     "https://saascan.ca/wp-content/uploads/2022/06/The-Metrics-SaaS-Investors-Care-About-Most.pdf",
-    "https://nvca.org/wp-content/uploads/2023/10/Q3_2023_PitchBook-NVCA_Venture_Monitor.pdf"
+    "https://nvca.org/wp-content/uploads/2023/10/Q3_2023_PitchBook-NVCA_Venture_Monitor.pdf",
 ]
 
 # Create a custom SSL context
@@ -67,8 +65,10 @@ async def fetch_pdf(session, url):
 
 
 async def load_pdf(url_or_path):
-    if url_or_path.startswith('http'):
-        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=ssl_context)) as session:
+    if url_or_path.startswith("http"):
+        async with aiohttp.ClientSession(
+            connector=aiohttp.TCPConnector(ssl=ssl_context)
+        ) as session:
             content = await fetch_pdf(session, url_or_path)
             if content:
                 try:
@@ -76,7 +76,9 @@ async def load_pdf(url_or_path):
                     text = ""
                     for page in pdf.pages:
                         text += page.extract_text()
-                    return [Document(page_content=text, metadata={"source": url_or_path})]
+                    return [
+                        Document(page_content=text, metadata={"source": url_or_path})
+                    ]
                 except Exception as e:
                     print(f"Error processing PDF from {url_or_path}: {str(e)}")
                     return None
@@ -107,7 +109,7 @@ def summarize_document(docs):
     map_reduce_chain = load_summarize_chain(llm, chain_type="map_reduce")
     map_reduce_summary = map_reduce_chain.invoke({"input_documents": splits})
 
-    return stuff_summary['output_text'], map_reduce_summary['output_text']
+    return stuff_summary["output_text"], map_reduce_summary["output_text"]
 
 
 def compare_summaries(stuff_summary, map_reduce_summary):
@@ -154,6 +156,7 @@ async def process_pdf(url_or_path):
 async def main():
     tasks = [process_pdf(url_or_path) for url_or_path in pdf_urls]
     await asyncio.gather(*tasks)
+
 
 if __name__ == "__main__":
     asyncio.run(main())

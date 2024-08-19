@@ -20,6 +20,7 @@ llama-index = "^0.10.64"
 textwrap3 = "^0.9.2"
 requests = "^2.32.3"
 langchain-openai = "^0.1.22"
+black = "^24.8.0"
 
 
 [build-system]
