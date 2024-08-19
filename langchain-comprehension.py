@@ -7,15 +7,17 @@ import tiktoken
 from tenacity import retry, stop_after_attempt, wait_exponential
 from aiohttp import ClientTimeout
 from dotenv import load_dotenv
+from PyPDF2 import PdfReader
+from io import BytesIO
+from pydantic import SecretStr
+
+# LangChain imports
 from langchain_openai import ChatOpenAI
 from langchain.chains.summarize import load_summarize_chain
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_core.messages import HumanMessage
-from PyPDF2 import PdfReader
-from io import BytesIO
 from langchain.schema import Document
-from pydantic import SecretStr
 
 
 # Load encoding
