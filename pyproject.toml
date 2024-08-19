@@ -19,6 +19,7 @@ spacy = "^3.7.5"
 llama-index = "^0.10.64"
 textwrap3 = "^0.9.2"
 requests = "^2.32.3"
+langchain-openai = "^0.1.22"
 
 
 [build-system]

@@ -34,6 +34,7 @@ llm.temperature = 0
 llm.model_name = "gpt-4o"
 
 pdf_urls = [
+    "https://personal.utdallas.edu/~otoole/CGS2301_S09/15_expert.pdf",
     "https://www.stepstonegroup.com/wp-content/uploads/2022/11/Venture-Capital_-Partying-Like-Its-1999_.pdf",
     "Ch9Leleux.pdf",  # Local file
     "https://www.cmc.edu/sites/default/files/Bias%20in%20the%20Reporting%20of%20Venture%20Capital%20Performance-%20The%20Disciplinary%20Role%20of%20FOIA%20%20.pdf",
