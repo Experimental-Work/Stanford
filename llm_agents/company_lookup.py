@@ -3,12 +3,15 @@ import openai
 from dotenv import load_dotenv
 
 # Load environment variables
-load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
+script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(script_dir)
+dotenv_path = os.path.join(parent_dir, '.env')
+load_dotenv(dotenv_path)
 
 # Set up OpenAI client
 openai_api_key = os.getenv('OPENAI_API_KEY')
 if not openai_api_key:
-    raise ValueError("No OpenAI API key found. Make sure it's set in your .env file.")
+    raise ValueError(f"No OpenAI API key found. Make sure it's set in your .env file at {dotenv_path}")
 client = openai.OpenAI(api_key=openai_api_key)
 
 
