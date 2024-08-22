@@ -6,34 +6,20 @@ from io import StringIO
 
 import requests
 import nltk
-from llama_index.core import Document, QueryBundle
-from llama_index.core.node_parser import SimpleNodeParser
-from llama_index.core.text_splitter import TokenTextSplitter
-from llama_index.llms.openai import OpenAI
-
-# Disable SSL certificate verification for NLTK
-try:
-    _create_unverified_https_context = ssl._create_unverified_context
-except AttributeError:
-    pass
-else:
-    ssl._create_default_https_context = _create_unverified_https_context
-from llama_index.core import VectorStoreIndex
-from llama_index.vector_stores.simple import SimpleVectorStore
+from llama_index import Document, QueryBundle, VectorStoreIndex
+from llama_index.node_parser import SimpleNodeParser
+from llama_index.text_splitter import TokenTextSplitter
+from llama_index.llms import OpenAI
+from llama_index.vector_stores import SimpleVectorStore
 
 # Set up OpenAI API key
 from dotenv import load_dotenv
 
 # Disable SSL certificate verification for NLTK
-try:
-    _create_unverified_https_context = ssl._create_unverified_context
-except AttributeError:
-    pass
-else:
-    ssl._create_default_https_context = _create_unverified_https_context
+ssl._create_default_https_context = ssl._create_unverified_context
 
 # Download NLTK data
-nltk.download('punkt', quiet=True)
+nltk.download('punkt', quiet=True, raise_on_error=False)
 
 load_dotenv()
 
