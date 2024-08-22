@@ -16,7 +16,7 @@ market_analyst = Agent(
     llm=llm,
     tools=[search_tool],
     allow_delegation=False,
-    model_config=ConfigDict(populate_by_name=True)
+    model_config=ConfigDict(populate_by_name=True),
 )
 
 financial_analyst = Agent(
@@ -27,7 +27,7 @@ financial_analyst = Agent(
     llm=llm,
     tools=[search_tool],
     allow_delegation=False,
-    model_config=ConfigDict(populate_by_name=True)
+    model_config=ConfigDict(populate_by_name=True),
 )
 
 tech_expert = Agent(
@@ -38,7 +38,7 @@ tech_expert = Agent(
     llm=llm,
     tools=[search_tool],
     allow_delegation=False,
-    model_config=ConfigDict(populate_by_name=True)
+    model_config=ConfigDict(populate_by_name=True),
 )
 
 competitor_analyst = Agent(
@@ -49,7 +49,7 @@ competitor_analyst = Agent(
     llm=llm,
     tools=[search_tool],
     allow_delegation=False,
-    model_config=ConfigDict(populate_by_name=True)
+    model_config=ConfigDict(populate_by_name=True),
 )
 
 contrarian_analyst = Agent(
@@ -60,7 +60,7 @@ contrarian_analyst = Agent(
     llm=llm,
     tools=[search_tool],
     allow_delegation=False,
-    model_config=ConfigDict(populate_by_name=True)
+    model_config=ConfigDict(populate_by_name=True),
 )
 
 investment_strategist = Agent(
@@ -71,7 +71,7 @@ investment_strategist = Agent(
     llm=llm,
     tools=[search_tool],
     allow_delegation=False,
-    model_config=ConfigDict(populate_by_name=True)
+    model_config=ConfigDict(populate_by_name=True),
 )
 
 
@@ -81,32 +81,32 @@ def create_tasks(startup_name):
         Task(
             description=f"Conduct a comprehensive market analysis for {startup_name}'s industry.",
             agent=market_analyst,
-            expected_output="A detailed market analysis report including market size, growth trends, and key players."
+            expected_output="A detailed market analysis report including market size, growth trends, and key players.",
         ),
         Task(
             description=f"Perform a detailed financial analysis of {startup_name}.",
             agent=financial_analyst,
-            expected_output="A financial report including revenue projections, burn rate, and funding requirements."
+            expected_output="A financial report including revenue projections, burn rate, and funding requirements.",
         ),
         Task(
             description=f"Evaluate the technological aspects and innovation potential of {startup_name}.",
             agent=tech_expert,
-            expected_output="A technology assessment report highlighting the startup's innovations and potential scalability."
+            expected_output="A technology assessment report highlighting the startup's innovations and potential scalability.",
         ),
         Task(
             description=f"Analyze the direct competitive landscape for {startup_name}, focusing on companies offering similar products or services in the same target market.",
             agent=competitor_analyst,
-            expected_output="A focused competitive analysis report identifying direct competitors, their strategies, and market positioning."
+            expected_output="A focused competitive analysis report identifying direct competitors, their strategies, and market positioning.",
         ),
         Task(
             description=f"Provide a contrarian analysis of {startup_name}, challenging assumptions and identifying potential weaknesses or risks.",
             agent=contrarian_analyst,
-            expected_output="A critical analysis report highlighting potential pitfalls, weaknesses, and alternative viewpoints on the startup's potential."
+            expected_output="A critical analysis report highlighting potential pitfalls, weaknesses, and alternative viewpoints on the startup's potential.",
         ),
         Task(
             description=f"Synthesize all findings, including contrarian views, and provide a balanced investment recommendation for {startup_name}.",
             agent=investment_strategist,
-            expected_output="A comprehensive and objective investment recommendation that considers both positive aspects and potential risks."
+            expected_output="A comprehensive and objective investment recommendation that considers both positive aspects and potential risks.",
         ),
     ]
 
@@ -130,6 +130,6 @@ def analyze_startup(startup_name):
 
 
 # Example usage
-startup_name = "LangChain"
+startup_name = "OpenAI"
 result = analyze_startup(startup_name)
 print(result)
