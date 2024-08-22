@@ -58,22 +58,27 @@ def create_tasks(startup_name):
         Task(
             description=f"Conduct a comprehensive market analysis for {startup_name}'s industry.",
             agent=market_analyst,
+            expected_output="A detailed market analysis report including market size, growth trends, and key players."
         ),
         Task(
             description=f"Perform a detailed financial analysis of {startup_name}.",
             agent=financial_analyst,
+            expected_output="A financial report including revenue projections, burn rate, and funding requirements."
         ),
         Task(
             description=f"Evaluate the technological aspects and innovation potential of {startup_name}.",
             agent=tech_expert,
+            expected_output="A technology assessment report highlighting the startup's innovations and potential scalability."
         ),
         Task(
             description=f"Analyze the competitive landscape for {startup_name}.",
             agent=competitor_analyst,
+            expected_output="A competitive analysis report identifying key competitors and their market positioning."
         ),
         Task(
             description=f"Synthesize all findings and provide an investment recommendation for {startup_name}.",
             agent=investment_strategist,
+            expected_output="A comprehensive investment recommendation based on all gathered information."
         ),
     ]
 
