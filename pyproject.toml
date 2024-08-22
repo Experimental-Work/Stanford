@@ -7,7 +7,7 @@ readme = "README.md"
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = ">=3.11,<=3.13"
 jupyter = "^1.0.0"
 openai = "^1.35.14"
 python-dotenv = "^1.0.1"
@@ -22,6 +22,8 @@ requests = "^2.32.3"
 langchain-cli = "^0.0.29"
 langchain-openai = "^0.1.22"
 black = "^24.8.0"
+crewai = "0.51.1"
+duckduckgo-search = "^6.2.10"
 
 
 [build-system]
