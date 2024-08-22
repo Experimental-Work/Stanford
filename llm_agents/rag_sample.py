@@ -10,8 +10,8 @@ from llama_index.core import Document, QueryBundle
 from llama_index.core.node_parser import SimpleNodeParser
 from llama_index.core.text_splitter import TokenTextSplitter
 from llama_index.llms.openai import OpenAI
-from llama_index.vector_stores.simple import SimpleVectorStore
 from llama_index.core import VectorStoreIndex
+from llama_index.vector_stores.simple import SimpleVectorStore
 
 # Set up OpenAI API key
 from dotenv import load_dotenv
