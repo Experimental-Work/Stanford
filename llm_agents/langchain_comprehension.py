@@ -16,18 +16,21 @@ from langchain_core.messages import HumanMessage
 from langchain_openai import ChatOpenAI
 from tenacity import retry, stop_after_attempt, wait_exponential
 
-from ..dotenv import load_dotenv
+from dotenv import load_dotenv
 
 # Load encoding
 tiktoken.get_encoding("o200k_base")
 
 # Load environment variables
-load_dotenv()
+script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(script_dir)
+dotenv_path = os.path.join(parent_dir, '.env')
+load_dotenv(dotenv_path)
 
 # Set up OpenAI client
 openai_api_key = os.getenv('OPENAI_API_KEY')
 if not openai_api_key:
-    raise ValueError("No OpenAI API key found. Make sure it's set in your .env file.")
+    raise ValueError(f"No OpenAI API key found. Make sure it's set in your .env file at {dotenv_path}")
 
 llm = ChatOpenAI(api_key=openai_api_key)
 llm.temperature = 0
