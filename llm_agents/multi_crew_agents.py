@@ -1,6 +1,7 @@
 from crewai import Agent, Task, Crew, Process
 from langchain_community.tools import DuckDuckGoSearchRun
 from langchain_openai import ChatOpenAI
+from pydantic import ConfigDict
 
 # Initialize the LLM and search tool
 llm = ChatOpenAI(temperature=0.7)
@@ -14,7 +15,8 @@ market_analyst = Agent(
     verbose=True,
     llm=llm,
     tools=[search_tool],
-    allow_delegation=False
+    allow_delegation=False,
+    model_config=ConfigDict(populate_by_name=True)
 )
 
 financial_analyst = Agent(
@@ -24,7 +26,8 @@ financial_analyst = Agent(
     verbose=True,
     llm=llm,
     tools=[search_tool],
-    allow_delegation=False
+    allow_delegation=False,
+    model_config=ConfigDict(populate_by_name=True)
 )
 
 tech_expert = Agent(
