@@ -94,7 +94,7 @@ def analyze_startup(startup_name):
             investment_strategist,
         ],
         tasks=create_tasks(startup_name),
-        verbose=2,
+        verbose=True,
         process=Process.sequential,
     )
     return crew.kickoff()
