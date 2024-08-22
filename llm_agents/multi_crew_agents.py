@@ -1,16 +1,10 @@
 from crewai import Agent, Task, Crew, Process
 from langchain_community.tools import DuckDuckGoSearchRun
 from langchain_openai import ChatOpenAI
-from pydantic import ConfigDict
 
 # Initialize the LLM and search tool
 llm = ChatOpenAI(temperature=0.7)
 search_tool = DuckDuckGoSearchRun()
-
-def search_wrapper(query: str) -> str:
-    """Wrapper function for DuckDuckGo search tool"""
-    return search_tool.run(query)
-
 
 # Define agents
 market_analyst = Agent(
@@ -19,7 +13,7 @@ market_analyst = Agent(
     backstory="You're a seasoned market analyst with a keen eye for emerging trends and market dynamics.",
     verbose=True,
     llm=llm,
-    tools=[search_wrapper],
+    tools=[search_tool],
     allow_delegation=False
 )
 
@@ -29,7 +23,7 @@ financial_analyst = Agent(
     backstory="You're an experienced financial analyst specializing in startup valuations and financial modeling.",
     verbose=True,
     llm=llm,
-    tools=[search_wrapper],
+    tools=[search_tool],
     allow_delegation=False
 )
 
@@ -39,7 +33,7 @@ tech_expert = Agent(
     backstory="You're a tech guru with extensive knowledge across various tech stacks and emerging technologies.",
     verbose=True,
     llm=llm,
-    tools=[search_wrapper],
+    tools=[search_tool],
     allow_delegation=False
 )
 
@@ -49,7 +43,7 @@ competitor_analyst = Agent(
     backstory="You're an expert in competitive analysis with a track record of uncovering hidden market players. You focus on direct competitors that offer similar products or services in the same target market.",
     verbose=True,
     llm=llm,
-    tools=[search_wrapper],
+    tools=[search_tool],
     allow_delegation=False
 )
 
@@ -59,7 +53,7 @@ contrarian_analyst = Agent(
     backstory="You're a skeptical analyst known for identifying potential pitfalls and weaknesses in seemingly promising startups.",
     verbose=True,
     llm=llm,
-    tools=[search_wrapper],
+    tools=[search_tool],
     allow_delegation=False
 )
 
@@ -69,7 +63,7 @@ investment_strategist = Agent(
     backstory="You're a veteran VC partner known for making well-informed, objective investment decisions by considering both positive and negative aspects.",
     verbose=True,
     llm=llm,
-    tools=[search_wrapper],
+    tools=[search_tool],
     allow_delegation=False
 )
 
