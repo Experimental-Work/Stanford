@@ -1,18 +1,29 @@
 import csv
 import os
 import textwrap
+import ssl
 from io import StringIO
 
 import requests
-from llama_index.core import Document
-from llama_index.core import QueryBundle
-from llama_index.core.node_parser import SimpleNodeParser
-from llama_index.core.text_splitter import TokenTextSplitter
-from llama_index.indices.vector_store import GPTVectorStoreIndex
-from llama_index.llms.openai import OpenAI
+import nltk
+from llama_index import Document, QueryBundle, GPTVectorStoreIndex
+from llama_index.node_parser import SimpleNodeParser
+from llama_index.text_splitter import TokenTextSplitter
+from llama_index.llms import OpenAI
 
 # Set up OpenAI API key
-from ...dotenv import load_dotenv
+from dotenv import load_dotenv
+
+# Disable SSL certificate verification for NLTK
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+
+# Download NLTK data
+nltk.download('punkt', quiet=True)
 
 load_dotenv()
 
@@ -78,7 +89,7 @@ def create_rag_system():
     nodes = parser.get_nodes_from_documents(documents)
 
     # Create index
-    index = GPTVectorStoreIndex(nodes)
+    index = GPTVectorStoreIndex.from_documents(documents)
 
     return index
 
