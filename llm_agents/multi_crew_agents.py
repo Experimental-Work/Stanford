@@ -7,6 +7,10 @@ from pydantic import ConfigDict
 llm = ChatOpenAI(temperature=0.7)
 search_tool = DuckDuckGoSearchRun()
 
+def search_wrapper(query: str) -> str:
+    """Wrapper function for DuckDuckGo search tool"""
+    return search_tool.run(query)
+
 # Define a base configuration for agents
 agent_config = ConfigDict(
     populate_by_name=True,
@@ -20,7 +24,7 @@ market_analyst = Agent(
     backstory="You're a seasoned market analyst with a keen eye for emerging trends and market dynamics.",
     verbose=True,
     llm=llm,
-    tools=[search_tool],
+    tools=[search_wrapper],
     config=agent_config
 )
 
