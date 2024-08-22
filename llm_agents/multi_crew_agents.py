@@ -37,7 +37,8 @@ tech_expert = Agent(
     verbose=True,
     llm=llm,
     tools=[search_tool],
-    allow_delegation=False
+    allow_delegation=False,
+    model_config=ConfigDict(populate_by_name=True)
 )
 
 competitor_analyst = Agent(
@@ -47,7 +48,8 @@ competitor_analyst = Agent(
     verbose=True,
     llm=llm,
     tools=[search_tool],
-    allow_delegation=False
+    allow_delegation=False,
+    model_config=ConfigDict(populate_by_name=True)
 )
 
 contrarian_analyst = Agent(
@@ -57,7 +59,8 @@ contrarian_analyst = Agent(
     verbose=True,
     llm=llm,
     tools=[search_tool],
-    allow_delegation=False
+    allow_delegation=False,
+    model_config=ConfigDict(populate_by_name=True)
 )
 
 investment_strategist = Agent(
@@ -67,7 +70,8 @@ investment_strategist = Agent(
     verbose=True,
     llm=llm,
     tools=[search_tool],
-    allow_delegation=False
+    allow_delegation=False,
+    model_config=ConfigDict(populate_by_name=True)
 )
 
 
