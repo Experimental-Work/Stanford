@@ -10,6 +10,14 @@ from llama_index.core import Document, QueryBundle
 from llama_index.core.node_parser import SimpleNodeParser
 from llama_index.core.text_splitter import TokenTextSplitter
 from llama_index.llms.openai import OpenAI
+
+# Disable SSL certificate verification for NLTK
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
 from llama_index.core import VectorStoreIndex
 from llama_index.vector_stores.simple import SimpleVectorStore
 
