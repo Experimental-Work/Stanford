@@ -1,5 +1,6 @@
-import spacy
 import numpy as np
+import spacy
+
 
 def load_model(model_name):
     try:

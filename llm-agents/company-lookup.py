@@ -1,14 +1,8 @@
 import os
-from ...dotenv import load_dotenv
-import requests
-import csv
-from io import StringIO
-from llama_index.core import Document
-from llama_index.core.node_parser import SimpleNodeParser
-from llama_index.indices.vector_store import GPTVectorStoreIndex
-from llama_index.core import QueryEngine
+
 import openai
 
+from ...dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))

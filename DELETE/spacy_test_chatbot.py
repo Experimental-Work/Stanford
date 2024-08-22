@@ -1,5 +1,5 @@
 import spacy
-import json
+
 
 def load_spacy_model():
     try:

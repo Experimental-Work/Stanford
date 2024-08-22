@@ -1,17 +1,19 @@
-import os
-import requests
 import csv
-from io import StringIO
+import os
 import textwrap
+from io import StringIO
+
+import requests
 from llama_index.core import Document
-from llama_index.indices.vector_store import GPTVectorStoreIndex
+from llama_index.core import QueryBundle
 from llama_index.core.node_parser import SimpleNodeParser
 from llama_index.core.text_splitter import TokenTextSplitter
+from llama_index.indices.vector_store import GPTVectorStoreIndex
 from llama_index.llms.openai import OpenAI
-from llama_index.core import QueryBundle
 
 # Set up OpenAI API key
 from ...dotenv import load_dotenv
+
 load_dotenv()
 
 # Ensure the API key is loaded
