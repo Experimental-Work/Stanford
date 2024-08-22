@@ -6,9 +6,7 @@ from io import StringIO
 
 import requests
 import nltk
-from llama_index.core import Document, VectorStoreIndex
-from llama_index.core.query_engine import QueryEngine
-from llama_index.core import QueryBundle
+from llama_index.core import Document, VectorStoreIndex, QueryBundle
 from llama_index.core.node_parser import SimpleNodeParser
 from llama_index.core.text_splitter import TokenTextSplitter
 from llama_index.llms.openai import OpenAI
@@ -20,7 +18,16 @@ from dotenv import load_dotenv
 ssl._create_default_https_context = ssl._create_unverified_context
 
 # Download NLTK data
-nltk.download('punkt', quiet=True, raise_on_error=False)
+try:
+    nltk.download('punkt', quiet=True)
+except ssl.SSLCertVerificationError:
+    print("SSL Certificate verification failed. Attempting to download without verification.")
+    try:
+        import urllib.request
+        urllib.request.urlopen = lambda url, *args, **kwargs: urllib.request.urlopen(url, *args, **kwargs, context=ssl._create_unverified_context())
+        nltk.download('punkt', quiet=True)
+    except Exception as e:
+        print(f"Failed to download NLTK data: {e}")
 
 load_dotenv()
 
@@ -95,10 +102,9 @@ print("Creating RAG system from Crunchbase lookup_data...")
 index = create_rag_system()
 
 # Query the index
-query_engine = index.as_query_engine()
 query = QueryBundle("What are some popular AI startups?")
 try:
-    response = query_engine.query(query)
+    response = index.query(query)
     print("\nRAG Query Result:")
     print(textwrap.fill(str(response), width=80))
 except Exception as e:
