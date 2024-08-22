@@ -16,6 +16,7 @@
 .idea/**/gradle.xml
 .idea/**/libraries
 cmake-build-*/
+poetry.lock
 .idea/**/mongoSettings.xml
 sample.ipynb
 *.iws
@@ -356,3 +357,4 @@ cython_debug/
 .aider*
 !/.env
 !/sample.ipynb
+throw-aways/

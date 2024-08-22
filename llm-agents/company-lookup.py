@@ -7,48 +7,64 @@ from llama_index.core import Document
 from llama_index.core.node_parser import SimpleNodeParser
 from llama_index.indices.vector_store import GPTVectorStoreIndex
 from llama_index.core import QueryEngine
+import openai
 
-# Set up OpenAI API key
-load_dotenv()
-openai_api_key = os.getenv("OPENAI_API_KEY")
+
+# Load environment variables
+load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
+
+# Set up OpenAI client
+openai_api_key = os.getenv('OPENAI_API_KEY')
 if not openai_api_key:
-    raise ValueError("OPENAI_API_KEY not found in environment variables")
+    raise ValueError("No OpenAI API key found. Make sure it's set in your .env file.")
+client = openai.OpenAI(api_key=openai_api_key)
 
-def fetch_crunchbase_data():
-    url = "https://gist.githubusercontent.com/jmperez/5791045/raw/295862e4b91a93157f84b050bb169940b7f4042d/crunchbase-companies.csv"
-    response = requests.get(url)
-    return response.text
 
-def create_rag_system():
-    # Fetch and process the Crunchbase data
-    csv_data = fetch_crunchbase_data()
-    csv_file = StringIO(csv_data)
-    csv_reader = csv.DictReader(csv_file)
+def chat(message, system_content):
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=[
+            {"role": "system", "content": system_content},
+            {"role": "user", "content": message},
+        ]
+    )
+    return response.choices[0].message.content
 
-    documents = []
-    for row in csv_reader:
-        content = f"Company: {row['name']}\nCategory: {row['category']}\nDescription: {row['description']}"
-        documents.append(Document(text=content))
 
-    # Parse nodes
-    parser = SimpleNodeParser.from_defaults()
-    nodes = parser.get_nodes_from_documents(documents)
+def main():
+    # Begin script with identification of company
+    company_name = input("What company do you want to learn about? ")
+    company_url = input("What is their URL (to make sure we're talking about the same company)? ")
 
-    # Create index
-    index = GPTVectorStoreIndex(nodes)
+    # Ask the user what information they want to retrieve
+    print("\nWhat would you like to know about the company?")
+    print("1. Main product(s)/lines")
+    print("2. Industry/sectors they operate in")
+    print("3. Current level(s) of competition")
+    print("4. Expected future prospects over the next 5 years")
+    choice = input("Enter your choice (1-4): ")
 
-    return index
+    # Assemble the query based on user's choices
+    if choice == '1':
+        query = f"What are the main product(s) or product lines of {company_name} (URL: {company_url})?"
+    elif choice == '2':
+        query = f"In which industry/sectors does {company_name} (URL: {company_url}) operate?"
+    elif choice == '3':
+        query = f"What is the current level of competition for {company_name} (URL: {company_url})?"
+    elif choice == '4':
+        query = f"What are the expected future prospects over the next 5 years for {company_name} (URL: {company_url})?"
+    else:
+        print("Invalid choice. Exiting.")
+        return
 
-# Example usage
-print("Creating RAG system from Crunchbase data...")
-index = create_rag_system()
+    # Get information from OpenAI
+    system_content = "You are a helpful assistant that provides concise and accurate information about companies."
+    response = chat(query, system_content)
 
-# Query the index
-query_engine = index.as_query_engine()
-query = "What are some popular AI startups?"
-try:
-    response = query_engine.query(query)
-    print("\nRAG Query Result:")
+    # Print the response
+    print("\nHere's the information you requested:")
     print(response)
-except Exception as e:
-    print(f"\nError querying the index: {e}")
+
+
+if __name__ == "__main__":
+    main()

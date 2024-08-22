@@ -12,15 +12,14 @@ jupyter = "^1.0.0"
 openai = "^1.35.14"
 python-dotenv = "^1.0.1"
 langchain-community = "^0.2.10"
-aiohttp = "^3.10.2"
+aiohttp = "^3.9.5"
 pypdf2 = "^3.0.1"
 langchain = "^0.2.11"
 spacy = "^3.7.5"
 llama-index = "^0.10.64"
 textwrap3 = "^0.9.2"
 requests = "^2.32.3"
-langchain-openai = "^0.1.22"
-black = "^24.8.0"
+langchain-cli = "^0.0.29"
 
 
 [build-system]

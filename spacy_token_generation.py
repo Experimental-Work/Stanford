@@ -12,7 +12,7 @@ def load_model(model_name):
 def process_text(nlp, text):
     doc = nlp(text)
     print(f"\nModel: {nlp.meta['name']}")
-    print(f"Model size: {nlp.meta['size']}")
+    print(f"Model name: {nlp.meta['name']}")
     print(f"Vector dimension: {nlp.vocab.vectors.shape[1]}")
     
     print("\nTokens (index: token):")
