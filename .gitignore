@@ -17,6 +17,7 @@
 .idea/**/libraries
 cmake-build-*/
 poetry.lock
+DELETE
 .idea/**/mongoSettings.xml
 sample.ipynb
 *.iws
