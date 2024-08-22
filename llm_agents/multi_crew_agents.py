@@ -34,7 +34,7 @@ financial_analyst = Agent(
     backstory="You're an experienced financial analyst specializing in startup valuations and financial modeling.",
     verbose=True,
     llm=llm,
-    tools=[search_tool],
+    tools=[search_wrapper],
     config=agent_config
 )
 
@@ -44,7 +44,7 @@ tech_expert = Agent(
     backstory="You're a tech guru with extensive knowledge across various tech stacks and emerging technologies.",
     verbose=True,
     llm=llm,
-    tools=[search_tool],
+    tools=[search_wrapper],
     config=agent_config
 )
 
@@ -54,7 +54,7 @@ competitor_analyst = Agent(
     backstory="You're an expert in competitive analysis with a track record of uncovering hidden market players.",
     verbose=True,
     llm=llm,
-    tools=[search_tool],
+    tools=[search_wrapper],
     config=agent_config
 )
 
