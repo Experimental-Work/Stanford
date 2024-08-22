@@ -38,7 +38,7 @@ llm.model_name = "gpt-4o"
 
 pdf_urls = [
     "https://www.stepstonegroup.com/wp-content/uploads/2022/11/Venture-Capital_-Partying-Like-Its-1999_.pdf",
-    "data/Ch9Leleux.pdf",  # Local file
+    "lookup_data/Ch9Leleux.pdf",  # Local file
     "https://www.cmc.edu/sites/default/files/Bias%20in%20the%20Reporting%20of%20Venture%20Capital%20Performance-%20The%20Disciplinary%20Role%20of%20FOIA%20%20.pdf",
     "https://www.albion.vc/app/uploads/2022/07/SaaS-AlbionVC.pdf",
     "https://saascan.ca/wp-content/uploads/2022/06/The-Metrics-SaaS-Investors-Care-About-Most.pdf",

@@ -44,7 +44,7 @@ Artificial Intelligence (AI) is a rapidly evolving field of computer science foc
 
 The field of AI can be divided into two main categories: narrow AI and general AI. Narrow AI, also known as weak AI, is designed to perform a specific task, such as voice recognition or playing chess. General AI, also called strong AI or artificial general intelligence (AGI), refers to machines that possess the ability to understand, learn, and apply knowledge across a wide range of tasks at a level equal to or exceeding human capabilities.
 
-Machine Learning (ML) is a subset of AI that focuses on the development of algorithms and statistical models that enable computer systems to improve their performance on a specific task through experience. Deep Learning, a subfield of machine learning, uses artificial neural networks with multiple layers to analyze various factors of lookupData.
+Machine Learning (ML) is a subset of AI that focuses on the development of algorithms and statistical models that enable computer systems to improve their performance on a specific task through experience. Deep Learning, a subfield of machine learning, uses artificial neural networks with multiple layers to analyze various factors of lookup_data.
 
 AI has numerous applications across various industries, including healthcare (for diagnosis and treatment recommendations), finance (for fraud detection and algorithmic trading), automotive (for self-driving cars), and many more. As AI continues to advance, it promises to revolutionize many aspects of our lives and work, while also raising important ethical and societal questions about its impact and governance.
 """
@@ -63,7 +63,7 @@ def fetch_crunchbase_data():
     return response.text
 
 def create_rag_system():
-    # Fetch and process the Crunchbase lookupData
+    # Fetch and process the Crunchbase lookup_data
     csv_data = fetch_crunchbase_data()
     csv_file = StringIO(csv_data)
     csv_reader = csv.DictReader(csv_file)
@@ -83,7 +83,7 @@ def create_rag_system():
     return index
 
 # Example usage
-print("Creating RAG system from Crunchbase lookupData...")
+print("Creating RAG system from Crunchbase lookup_data...")
 index = create_rag_system()
 
 # Query the index
