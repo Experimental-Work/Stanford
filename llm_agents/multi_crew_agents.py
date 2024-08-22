@@ -1,10 +1,17 @@
 from crewai import Agent, Task, Crew, Process
 from langchain_community.tools import DuckDuckGoSearchRun
-from langchain_openai import OpenAI
+from langchain_openai import ChatOpenAI
+from pydantic import ConfigDict
 
 # Initialize the LLM and search tool
-llm = OpenAI(temperature=0.7)
+llm = ChatOpenAI(temperature=0.7)
 search_tool = DuckDuckGoSearchRun()
+
+# Define a base configuration for agents
+agent_config = ConfigDict(
+    populate_by_name=True,
+    arbitrary_types_allowed=True
+)
 
 # Define agents
 market_analyst = Agent(
@@ -14,6 +21,7 @@ market_analyst = Agent(
     verbose=True,
     llm=llm,
     tools=[search_tool],
+    config=agent_config
 )
 
 financial_analyst = Agent(
@@ -23,6 +31,7 @@ financial_analyst = Agent(
     verbose=True,
     llm=llm,
     tools=[search_tool],
+    config=agent_config
 )
 
 tech_expert = Agent(
@@ -32,6 +41,7 @@ tech_expert = Agent(
     verbose=True,
     llm=llm,
     tools=[search_tool],
+    config=agent_config
 )
 
 competitor_analyst = Agent(
@@ -41,6 +51,7 @@ competitor_analyst = Agent(
     verbose=True,
     llm=llm,
     tools=[search_tool],
+    config=agent_config
 )
 
 investment_strategist = Agent(
@@ -49,6 +60,7 @@ investment_strategist = Agent(
     backstory="You're a veteran VC partner known for identifying unicorn startups early.",
     verbose=True,
     llm=llm,
+    config=agent_config
 )
 
 
