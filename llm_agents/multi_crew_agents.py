@@ -129,7 +129,9 @@ def analyze_startup(startup_name):
     return crew.kickoff()
 
 
-# Example usage
-startup_name = "OpenAI"
+# Get user input for startup name
+startup_name = input("Enter the name of the startup you want to analyze: ")
+
+# Analyze the startup
 result = analyze_startup(startup_name)
 print(result)
