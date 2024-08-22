@@ -6,10 +6,12 @@ from io import StringIO
 
 import requests
 import nltk
-from llama_index import Document, QueryBundle, GPTVectorStoreIndex
-from llama_index.node_parser import SimpleNodeParser
-from llama_index.text_splitter import TokenTextSplitter
-from llama_index.llms import OpenAI
+from llama_index.core import Document, QueryBundle
+from llama_index.core.node_parser import SimpleNodeParser
+from llama_index.core.text_splitter import TokenTextSplitter
+from llama_index.llms.openai import OpenAI
+from llama_index.vector_stores.simple import SimpleVectorStore
+from llama_index.core import VectorStoreIndex
 
 # Set up OpenAI API key
 from dotenv import load_dotenv
@@ -89,7 +91,7 @@ def create_rag_system():
     nodes = parser.get_nodes_from_documents(documents)
 
     # Create index
-    index = GPTVectorStoreIndex.from_documents(documents)
+    index = VectorStoreIndex.from_documents(documents, vector_store=SimpleVectorStore())
 
     return index
 
