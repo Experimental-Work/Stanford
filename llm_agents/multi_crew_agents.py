@@ -11,11 +11,6 @@ def search_wrapper(query: str) -> str:
     """Wrapper function for DuckDuckGo search tool"""
     return search_tool.run(query)
 
-# Define a base configuration for agents
-agent_config = ConfigDict(
-    populate_by_name=True,
-    arbitrary_types_allowed=True
-)
 
 # Define agents
 market_analyst = Agent(
@@ -25,7 +20,7 @@ market_analyst = Agent(
     verbose=True,
     llm=llm,
     tools=[search_wrapper],
-    config=agent_config
+    allow_delegation=False
 )
 
 financial_analyst = Agent(
@@ -35,7 +30,7 @@ financial_analyst = Agent(
     verbose=True,
     llm=llm,
     tools=[search_wrapper],
-    config=agent_config
+    allow_delegation=False
 )
 
 tech_expert = Agent(
@@ -45,7 +40,7 @@ tech_expert = Agent(
     verbose=True,
     llm=llm,
     tools=[search_wrapper],
-    config=agent_config
+    allow_delegation=False
 )
 
 competitor_analyst = Agent(
@@ -55,7 +50,7 @@ competitor_analyst = Agent(
     verbose=True,
     llm=llm,
     tools=[search_wrapper],
-    config=agent_config
+    allow_delegation=False
 )
 
 contrarian_analyst = Agent(
@@ -65,7 +60,7 @@ contrarian_analyst = Agent(
     verbose=True,
     llm=llm,
     tools=[search_wrapper],
-    config=agent_config
+    allow_delegation=False
 )
 
 investment_strategist = Agent(
@@ -74,7 +69,8 @@ investment_strategist = Agent(
     backstory="You're a veteran VC partner known for making well-informed, objective investment decisions by considering both positive and negative aspects.",
     verbose=True,
     llm=llm,
-    config=agent_config
+    tools=[search_wrapper],
+    allow_delegation=False
 )
 
 
