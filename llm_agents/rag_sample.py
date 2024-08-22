@@ -1,9 +1,11 @@
 import csv
 import os
 import textwrap
+import ssl
 from io import StringIO
 
 import requests
+import nltk
 from llama_index.core import Document, VectorStoreIndex
 from llama_index.core.node_parser import SimpleNodeParser
 from llama_index.core.text_splitter import TokenTextSplitter
@@ -18,6 +20,17 @@ load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
 if not openai_api_key:
     raise ValueError("OPENAI_API_KEY not found in environment variables")
+
+# Set up custom SSL context for NLTK
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+
+# Download NLTK data
+nltk.download('punkt', quiet=True)
 
 # Part 1: Summarization using llama-index
 def summarize_text(text, method="stuff"):
