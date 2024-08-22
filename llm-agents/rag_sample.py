@@ -3,7 +3,8 @@ import requests
 import csv
 from io import StringIO
 import textwrap
-from llama_index.core import Document, VectorStoreIndex
+from llama_index.core import Document
+from llama_index.indices.vector_store import GPTVectorStoreIndex
 from llama_index.core.node_parser import SimpleNodeParser
 from llama_index.core.text_splitter import TokenTextSplitter
 from llama_index.llms.openai import OpenAI
@@ -75,7 +76,7 @@ def create_rag_system():
     nodes = parser.get_nodes_from_documents(documents)
 
     # Create index
-    index = VectorStoreIndex(nodes)
+    index = GPTVectorStoreIndex(nodes)
 
     return index
 
