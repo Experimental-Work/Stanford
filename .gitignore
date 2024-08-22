@@ -356,6 +356,5 @@ dmypy.json
 .pytype/
 cython_debug/
 .aider*
-!/.env
 !/sample.ipynb
 throw-aways/
